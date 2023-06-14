@@ -1,9 +1,10 @@
 // src/main.ts
-
+import { HttpAdapterHost } from '@nestjs/core';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { PrismaClientExceptionFilter } from 'src/prisma-client-exception/prisma-client-exception.filter';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 // The ValidationPipe provides a convenient approach to enforce validation rules for all incoming client payloads,
 // where the validation rules are declared with decorators from the class-validator package.
@@ -24,6 +25,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
+
+  
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   await app.listen(3001);
 }
 bootstrap();
