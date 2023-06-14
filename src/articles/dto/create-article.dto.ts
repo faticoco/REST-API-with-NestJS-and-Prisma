@@ -7,8 +7,7 @@ import {
   IsString,
   MaxLength,
   MinLength,
-  isNotEmpty,
-  isString,
+  
 } from 'class-validator';
 
 

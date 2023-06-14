@@ -2,8 +2,12 @@
 import { HttpAdapterHost } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { PrismaClientExceptionFilter } from 'src/prisma-client-exception/prisma-client-exception.filter';
-import { NestFactory } from '@nestjs/core';
+import { NestFactory , Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
+
+// NestJS has a built-in ClassSerializerInterceptor that can be used to transform objects. 
+import { ClassSerializerInterceptor} from '@nestjs/common';
+
 
 
 // The ValidationPipe provides a convenient approach to enforce validation rules for all incoming client payloads,
@@ -29,6 +33,8 @@ async function bootstrap() {
   
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
   await app.listen(3001);
 }
 bootstrap();
