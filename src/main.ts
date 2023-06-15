@@ -24,6 +24,7 @@ async function bootstrap() {
     .setTitle('Fatima Bilal')
     .setDescription(' Software developer')
     .setVersion('0.1')
+    .addBearerAuth()
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

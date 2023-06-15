@@ -13,6 +13,7 @@ exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("./../prisma/prisma.service");
 const jwt_1 = require("@nestjs/jwt");
+const bcrypt = require("bcrypt");
 let AuthService = exports.AuthService = class AuthService {
     constructor(prisma, jwtService) {
         this.prisma = prisma;
@@ -23,7 +24,7 @@ let AuthService = exports.AuthService = class AuthService {
         if (!user) {
             throw new common_1.NotFoundException(`No user found for email: ${email}`);
         }
-        const isPasswordValid = user.password === password;
+        const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             throw new common_1.UnauthorizedException('Invalid password');
         }

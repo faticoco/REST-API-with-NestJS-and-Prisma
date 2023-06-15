@@ -13,6 +13,8 @@ const auth_controller_1 = require("./auth.controller");
 const passport_1 = require("@nestjs/passport");
 const jwt_1 = require("@nestjs/jwt");
 const prisma_module_1 = require("../prisma/prisma.module");
+const users_module_1 = require("../users/users.module");
+const jwt_strategy_1 = require("./jwt.strategy");
 exports.jwtSecret = 'zjP9h6ZI5LoSKCRj';
 let AuthModule = exports.AuthModule = class AuthModule {
 };
@@ -25,9 +27,10 @@ exports.AuthModule = AuthModule = __decorate([
                 secret: exports.jwtSecret,
                 signOptions: { expiresIn: '30s' },
             }),
+            users_module_1.UsersModule,
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
+        providers: [auth_service_1.AuthService, jwt_strategy_1.JwtStrategy],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map
